@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ZIME — Precision. Reimagined.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+
+/* ═══════════════════════════════════════════════
+   RESET + TOKENS
+═══════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root {
+  --navy:        #080c14;
+  --navy-mid:    #0c1422;
+  --navy-light:  #111d33;
+  --blue-1:      #1a56ff;
+  --blue-2:      #0ea5e9;
+  --blue-3:      #38bdf8;
+  --gold:        #c9a96e;
+  --gold-light:  #e4c98a;
+  --white:       #f0f4ff;
+  --white-dim:   rgba(240,244,255,.65);
+  --white-faint: rgba(240,244,255,.3);
+  --glass-bg:    rgba(255,255,255,.04);
+  --glass-border:rgba(255,255,255,.08);
+  --glow-blue:   rgba(26,86,255,.35);
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans:  'Outfit', sans-serif;
+  --ease:  cubic-bezier(.2,0,.1,1);
+  --spring:cubic-bezier(.34,1.56,.64,1);
+}
+
+html{scroll-behavior:smooth;font-size:16px}
+body{
+  font-family:var(--sans);font-weight:300;
+  background:var(--navy);color:var(--white);
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;
+}
+
+/* Cosmic background */
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 0%,   rgba(26,86,255,.14)  0%,transparent 60%),
+    radial-gradient(ellipse 60% 50% at 90% 90%,  rgba(14,165,233,.1)  0%,transparent 55%),
+    radial-gradient(ellipse 40% 30% at 50% 50%,  rgba(201,169,110,.05)0%,transparent 60%);
+  pointer-events:none;z-index:0;
+}
+body::after{
+  content:'';position:fixed;inset:0;
+  background-image:
+    radial-gradient(1px 1px at 15% 25%,rgba(255,255,255,.5)0%,transparent 100%),
+    radial-gradient(1px 1px at 72% 12%,rgba(255,255,255,.4)0%,transparent 100%),
+    radial-gradient(1px 1px at 35% 68%,rgba(255,255,255,.3)0%,transparent 100%),
+    radial-gradient(1px 1px at 88% 55%,rgba(255,255,255,.4)0%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 55% 82%,rgba(255,255,255,.25)0%,transparent 100%),
+    radial-gradient(1px 1px at 8%  90%,rgba(255,255,255,.3)0%,transparent 100%),
+    radial-gradient(1px 1px at 96% 30%,rgba(255,255,255,.3)0%,transparent 100%);
+  pointer-events:none;z-index:0;
+}
+
+/* ═══════════════════════════════════════════════
+   REVEAL
+═══════════════════════════════════════════════ */
+.reveal{
+  opacity:0;transform:translateY(36px);
+  transition:opacity .9s var(--ease),transform .9s var(--ease);
+}
+.reveal.from-left {transform:translateX(-36px)}
+.reveal.from-right{transform:translateX(36px)}
+.reveal.in{opacity:1;transform:none}
+
+/* ═══════════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════════ */
+nav{
+  position:fixed;inset:0 0 auto;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 60px;height:72px;
+  background:rgba(8,12,20,.55);
+  backdrop-filter:blur(28px) saturate(160%);
+  -webkit-backdrop-filter:blur(28px) saturate(160%);
+  border-bottom:1px solid var(--glass-border);
+}
+.nav-logo{
+  font-family:var(--serif);font-weight:700;font-size:1.6rem;
+  letter-spacing:.14em;text-decoration:none;
+  background:linear-gradient(135deg,var(--white) 0%,var(--gold-light) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.nav-links{display:flex;gap:44px;list-style:none}
+.nav-links a{
+  font-size:.78rem;font-weight:400;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--white-dim);text-decoration:none;transition:color .3s;position:relative;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:-3px;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,var(--blue-1),var(--blue-3));
+  transform:scaleX(0);transform-origin:right;transition:transform .35s var(--ease);
+}
+.nav-links a:hover{color:var(--white)}
+.nav-links a:hover::after{transform:scaleX(1);transform-origin:left}
+.nav-btn{
+  font-size:.75rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--navy);text-decoration:none;padding:11px 28px;border-radius:100px;
+  background:linear-gradient(135deg,var(--white) 0%,rgba(240,244,255,.85)100%);
+  box-shadow:0 0 24px rgba(26,86,255,.2);
+  transition:box-shadow .35s,transform .35s var(--spring);
+}
+.nav-btn:hover{box-shadow:0 0 44px rgba(26,86,255,.45);transform:scale(1.05)}
+
+/* ═══════════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════════ */
+.hero{
+  min-height:100svh;display:grid;
+  grid-template-columns:1fr 1fr;
+  align-items:center;gap:60px;
+  padding:120px 80px 80px;
+  position:relative;overflow:hidden;
+}
+.hero::after{
+  content:'';position:absolute;top:50%;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(26,86,255,.35),rgba(14,165,233,.3),transparent);
+  transform:translateY(-50%);pointer-events:none;
+}
+.hero-text{position:relative;z-index:1}
+
+.hero-badge{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:.7rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--gold);background:rgba(201,169,110,.08);
+  border:1px solid rgba(201,169,110,.2);
+  padding:7px 20px 7px 14px;border-radius:100px;margin-bottom:32px;
+}
+.badge-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--gold);
+  animation:glowPulse 2s ease-in-out infinite;
+}
+@keyframes glowPulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(201,169,110,.5)}
+  50%    {box-shadow:0 0 0 6px rgba(201,169,110,0)}
+}
+
+.hero-h1{
+  font-family:var(--serif);font-weight:700;
+  font-size:clamp(3.2rem,5.5vw,5.6rem);
+  line-height:1.02;letter-spacing:-.01em;margin-bottom:28px;
+}
+.grad-text{
+  background:linear-gradient(135deg,var(--blue-1) 0%,var(--blue-2) 50%,var(--blue-3) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  background-size:200% 200%;animation:gradDrift 5s ease infinite;
+}
+@keyframes gradDrift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+
+.hero-sub{
+  font-size:1rem;font-weight:300;color:var(--white-dim);
+  line-height:1.8;max-width:420px;margin-bottom:48px;
+}
+.hero-btns{display:flex;gap:16px;flex-wrap:wrap}
+
+/* Pulsing glow CTA */
+.btn-glow{
+  position:relative;display:inline-block;
+  padding:16px 44px;border-radius:100px;
+  font-size:.85rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;
+  text-decoration:none;color:var(--white);overflow:hidden;
+  background:linear-gradient(135deg,var(--blue-1),var(--blue-2));
+  box-shadow:0 0 32px var(--glow-blue),inset 0 1px 0 rgba(255,255,255,.15);
+  transition:transform .35s var(--spring),box-shadow .4s;
+  animation:btnPulse 3s ease-in-out infinite;
+}
+.btn-glow::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.15),transparent);
+  border-radius:inherit;
+}
+.btn-glow::after{
+  content:'';position:absolute;
+  top:-50%;left:-75%;width:50%;height:200%;
+  background:rgba(255,255,255,.15);
+  transform:skewX(-20deg);
+  transition:left .6s var(--ease);
+}
+.btn-glow:hover{
+  transform:scale(1.05) translateY(-2px);
+  box-shadow:0 0 64px rgba(26,86,255,.6),0 12px 40px rgba(0,0,0,.4);
+  animation:none;
+}
+.btn-glow:hover::after{left:125%}
+@keyframes btnPulse{
+  0%,100%{box-shadow:0 0 32px var(--glow-blue),inset 0 1px 0 rgba(255,255,255,.15)}
+  50%    {box-shadow:0 0 56px rgba(26,86,255,.55),inset 0 1px 0 rgba(255,255,255,.15)}
+}
+
+.btn-ghost{
+  display:inline-block;padding:15px 44px;border-radius:100px;
+  font-size:.85rem;font-weight:400;letter-spacing:.08em;text-transform:uppercase;
+  text-decoration:none;color:var(--white-dim);
+  border:1px solid var(--glass-border);background:var(--glass-bg);
+  backdrop-filter:blur(10px);
+  transition:border-color .3s,color .3s,transform .35s var(--spring),box-shadow .3s;
+}
+.btn-ghost:hover{
+  border-color:rgba(255,255,255,.2);color:var(--white);
+  transform:scale(1.04) translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.3);
+}
+
+/* Hero visual */
+.hero-visual{
+  position:relative;z-index:1;
+  display:flex;align-items:center;justify-content:center;
+}
+.device-wrap{position:relative;width:100%;max-width:500px}
+
+.device-halo{
+  position:absolute;inset:-20%;
+  background:radial-gradient(ellipse at center,rgba(26,86,255,.25) 0%,transparent 65%);
+  animation:haloBreath 4s ease-in-out infinite;pointer-events:none;
+}
+@keyframes haloBreath{
+  0%,100%{opacity:.7;transform:scale(1)}
+  50%    {opacity:1; transform:scale(1.06)}
+}
+
+.device{
+  width:100%;aspect-ratio:4/3;
+  background:linear-gradient(145deg,#0d1526,#0a1020);
+  border-radius:18px;border:1px solid rgba(255,255,255,.1);
+  overflow:hidden;position:relative;
+  box-shadow:0 60px 120px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.05),inset 0 1px 0 rgba(255,255,255,.1);
+  animation:deviceFloat 6s ease-in-out infinite;
+}
+@keyframes deviceFloat{
+  0%,100%{transform:translateY(0)   rotate(-1deg)}
+  50%    {transform:translateY(-14px) rotate(1deg)}
+}
+.device-bar{
+  height:38px;background:rgba(255,255,255,.04);
+  border-bottom:1px solid rgba(255,255,255,.06);
+  display:flex;align-items:center;padding:0 16px;gap:8px;
+}
+.d-dot{width:11px;height:11px;border-radius:50%}
+.d-dot:nth-child(1){background:#ff5f57}
+.d-dot:nth-child(2){background:#febc2e}
+.d-dot:nth-child(3){background:#28c840}
+.d-url{margin-left:12px;flex:1;height:22px;background:rgba(255,255,255,.06);border-radius:4px;max-width:200px}
+.device-screen{
+  padding:20px;display:grid;
+  grid-template-columns:140px 1fr;gap:14px;height:calc(100% - 38px);
+}
+.d-sidebar{
+  background:rgba(255,255,255,.03);border-radius:8px;
+  padding:14px 12px;display:flex;flex-direction:column;gap:6px;
+}
+.d-nav-item{height:26px;border-radius:6px;background:rgba(255,255,255,.05)}
+.d-nav-item.active{
+  background:linear-gradient(90deg,rgba(26,86,255,.3),rgba(14,165,233,.2));
+  border:1px solid rgba(26,86,255,.25);
+}
+.d-main{display:grid;grid-template-rows:auto 1fr;gap:12px}
+.d-chart-area{background:rgba(255,255,255,.03);border-radius:8px;padding:14px}
+.d-chart-bars{display:flex;align-items:flex-end;gap:6px;height:70px;margin-top:10px}
+.d-bar{
+  flex:1;border-radius:3px 3px 0 0;
+  background:linear-gradient(to top,rgba(26,86,255,.6),rgba(14,165,233,.4));
+}
+.d-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.d-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:12px}
+.d-line{height:6px;border-radius:3px;background:rgba(255,255,255,.1);margin-bottom:6px}
+.d-line.short{width:55%;background:rgba(255,255,255,.06)}
+.d-line.accent{background:linear-gradient(90deg,rgba(26,86,255,.5),rgba(14,165,233,.3))}
+
+.device-stand{
+  width:30%;height:18px;
+  background:linear-gradient(to bottom,rgba(255,255,255,.08),rgba(255,255,255,.03));
+  margin:0 auto;clip-path:polygon(15% 0%,85% 0%,100% 100%,0% 100%);
+}
+.device-base{
+  width:50%;height:6px;
+  background:rgba(255,255,255,.06);margin:0 auto;border-radius:100px;
+}
+
+.hero-badge-float{
+  position:absolute;padding:12px 20px;border-radius:14px;
+  background:rgba(255,255,255,.05);backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.1);font-size:.72rem;font-weight:500;
+  letter-spacing:.06em;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.3);
+}
+.hbf-1{
+  top:12%;right:-4%;
+  animation:floatA 5s ease-in-out infinite;
+  color:var(--gold);border-color:rgba(201,169,110,.2);background:rgba(201,169,110,.06);
+}
+.hbf-2{
+  bottom:18%;left:-6%;
+  animation:floatB 6s ease-in-out infinite;
+  color:var(--blue-3);border-color:rgba(56,189,248,.2);background:rgba(56,189,248,.06);
+}
+@keyframes floatA{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes floatB{0%,100%{transform:translateY(0)}50%{transform:translateY(10px)}}
+
+/* ═══════════════════════════════════════════════
+   SHARED SECTION STYLES
+═══════════════════════════════════════════════ */
+section{position:relative;z-index:1}
+
+.section-head{text-align:center;margin-bottom:72px}
+.section-tag{
+  display:inline-block;font-size:.68rem;font-weight:500;
+  letter-spacing:.26em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;
+}
+.section-head h2{
+  font-family:var(--serif);font-weight:700;
+  font-size:clamp(2.4rem,4.5vw,4rem);line-height:1.1;letter-spacing:-.01em;
+}
+.section-head p{
+  font-size:.95rem;font-weight:300;color:var(--white-dim);
+  max-width:480px;margin:16px auto 0;line-height:1.8;
+}
+
+.grad-rule{
+  height:1px;position:relative;z-index:1;
+  background:linear-gradient(90deg,transparent,var(--blue-1),var(--blue-2),transparent);
+  opacity:.25;
+}
+
+/* ═══════════════════════════════════════════════
+   STATS BAND
+═══════════════════════════════════════════════ */
+.stats-band{
+  padding:80px;display:flex;justify-content:center;
+  position:relative;z-index:1;
+}
+.stat-item{
+  flex:1;max-width:200px;text-align:center;padding:40px 20px;
+  background:var(--glass-bg);border:1px solid var(--glass-border);
+  backdrop-filter:blur(20px);
+}
+.stat-item:first-child{border-radius:20px 0 0 20px}
+.stat-item:last-child {border-radius:0 20px 20px 0}
+.stat-item+.stat-item{border-left:none}
+.stat-num{
+  font-family:var(--serif);font-size:3rem;font-weight:700;
+  letter-spacing:-.02em;line-height:1;margin-bottom:10px;
+  background:linear-gradient(135deg,var(--white) 0%,var(--blue-3) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.stat-label{
+  font-size:.75rem;font-weight:400;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--white-dim);
+}
+
+/* ═══════════════════════════════════════════════
+   FEATURES
+═══════════════════════════════════════════════ */
+.features{padding:140px 80px}
+
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+
+.feat-card{
+  background:var(--glass-bg);border:1px solid var(--glass-border);
+  border-radius:20px;padding:44px 36px;backdrop-filter:blur(20px);
+  position:relative;overflow:hidden;
+  transition:transform .4s var(--spring),box-shadow .4s,border-color .35s;
+  cursor:default;
+}
+.feat-card::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(26,86,255,.07),transparent 60%);
+  opacity:0;transition:opacity .4s;pointer-events:none;
+}
+.feat-card:hover::before{opacity:1}
+.feat-card::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent);
+}
+.feat-card:hover{
+  transform:translateY(-8px) scale(1.01);
+  box-shadow:0 28px 64px rgba(0,0,0,.4),0 0 40px rgba(26,86,255,.1);
+  border-color:rgba(26,86,255,.2);
+}
+
+.feat-icon-wrap{
+  width:56px;height:56px;border-radius:14px;
+  background:linear-gradient(135deg,rgba(26,86,255,.15),rgba(14,165,233,.1));
+  border:1px solid rgba(26,86,255,.2);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:28px;transition:box-shadow .35s;
+}
+.feat-card:hover .feat-icon-wrap{box-shadow:0 0 24px rgba(26,86,255,.35)}
+.feat-icon-wrap svg{stroke:var(--blue-3)}
+
+.feat-card h3{
+  font-family:var(--serif);font-weight:600;font-size:1.45rem;
+  margin-bottom:14px;letter-spacing:-.01em;
+}
+.feat-card p{font-size:.88rem;color:var(--white-dim);line-height:1.8}
+
+/* ═══════════════════════════════════════════════
+   PRODUCTS
+═══════════════════════════════════════════════ */
+.products{padding:0 80px 140px}
+
+.prod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+
+.prod-card{
+  border-radius:22px;overflow:hidden;position:relative;
+  background:var(--navy-light);border:1px solid var(--glass-border);
+  transition:transform .5s var(--spring),box-shadow .5s;cursor:default;
+}
+.prod-card:hover{
+  transform:translateY(-10px) scale(1.02);
+  box-shadow:0 40px 80px rgba(0,0,0,.5),0 0 50px rgba(26,86,255,.12);
+}
+
+.prod-visual{
+  height:240px;position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+.prod-card:nth-child(1) .prod-visual{background:linear-gradient(145deg,#0d1a2e,#0a1223)}
+.prod-card:nth-child(2) .prod-visual{background:linear-gradient(145deg,#0e1829,#0b1420)}
+.prod-card:nth-child(3) .prod-visual{background:linear-gradient(145deg,#0c1626,#09101e)}
+
+.prod-illustration{
+  position:relative;width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+}
+
+/* CSS Watch */
+.watch-glow{
+  position:absolute;inset:-30%;
+  background:radial-gradient(circle,rgba(26,86,255,.2),transparent 65%);
+  animation:haloBreath 3s ease-in-out infinite;
+}
+.watch-strap-t,.watch-strap-b{
+  position:absolute;left:50%;transform:translateX(-50%);
+  width:64px;height:30px;
+  background:linear-gradient(135deg,#1a2540,#111d30);border-radius:4px;
+}
+.watch-strap-t{top:18px}
+.watch-strap-b{bottom:18px}
+.css-watch{
+  width:90px;height:100px;
+  background:linear-gradient(145deg,#1e2840,#141e32);
+  border-radius:22px;border:2px solid rgba(255,255,255,.12);
+  position:relative;z-index:2;
+  box-shadow:0 0 40px rgba(26,86,255,.25),inset 0 1px 0 rgba(255,255,255,.1);
+  transition:transform .4s var(--spring);
+}
+.prod-card:hover .css-watch{transform:scale(1.08) rotate(3deg)}
+.css-watch::before{
+  content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:60%;height:60%;border:1.5px solid rgba(26,86,255,.4);border-radius:50%;
+}
+.css-watch::after{
+  content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:6px;height:6px;border-radius:50%;
+  background:var(--blue-2);box-shadow:0 0 12px var(--blue-2);
+}
+
+/* CSS Earbuds */
+.css-earbuds{
+  display:flex;gap:28px;align-items:center;
+  transition:transform .4s var(--spring);
+}
+.prod-card:hover .css-earbuds{transform:scale(1.08)}
+.earbud{
+  width:32px;height:52px;
+  background:linear-gradient(145deg,#1e2e48,#141e32);
+  border-radius:16px 16px 8px 8px;border:1px solid rgba(255,255,255,.12);
+  position:relative;box-shadow:0 0 24px rgba(14,165,233,.2);
+}
+.earbud::after{
+  content:'';position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);
+  width:5px;height:20px;background:rgba(255,255,255,.15);border-radius:100px;
+}
+.earbud-case{
+  width:70px;height:50px;
+  background:linear-gradient(145deg,#1a2840,#111d30);
+  border-radius:14px;border:1px solid rgba(255,255,255,.1);
+  display:flex;align-items:center;justify-content:space-around;padding:0 12px;
+}
+.eb-slot{width:14px;height:28px;background:rgba(255,255,255,.06);border-radius:8px}
+
+/* CSS Laptop */
+.css-laptop{
+  display:flex;flex-direction:column;align-items:center;
+  transition:transform .4s var(--spring);
+}
+.prod-card:hover .css-laptop{transform:scale(1.05) translateY(-6px)}
+.laptop-screen{
+  width:160px;height:95px;
+  background:linear-gradient(145deg,#0d1525,#080e1c);
+  border-radius:8px 8px 0 0;border:1.5px solid rgba(255,255,255,.12);
+  padding:8px;overflow:hidden;
+}
+.laptop-screen-inner{
+  height:100%;
+  background:linear-gradient(135deg,rgba(26,86,255,.12),rgba(14,165,233,.08));
+  border-radius:4px;display:flex;flex-direction:column;gap:5px;padding:6px;
+}
+.ls-line{height:4px;border-radius:2px;background:rgba(255,255,255,.2)}
+.ls-line.accent{background:linear-gradient(90deg,rgba(26,86,255,.6),rgba(14,165,233,.4));width:60%}
+.ls-line.short{width:45%;background:rgba(255,255,255,.1)}
+.laptop-hinge{width:170px;height:4px;background:rgba(255,255,255,.07)}
+.laptop-base{
+  width:180px;height:12px;
+  background:linear-gradient(145deg,#1a2540,#111d30);
+  border-radius:0 0 6px 6px;border:1px solid rgba(255,255,255,.08);
+}
+
+.prod-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(8,12,20,.9) 0%,transparent 50%);
+}
+
+.prod-info{padding:28px 28px 32px}
+.prod-tag{
+  font-size:.65rem;font-weight:500;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:8px;
+}
+.prod-info h3{
+  font-family:var(--serif);font-weight:600;font-size:1.5rem;
+  margin-bottom:10px;letter-spacing:-.01em;
+}
+.prod-info p{font-size:.85rem;color:var(--white-dim);line-height:1.7;margin-bottom:20px}
+.prod-price{display:flex;align-items:center;justify-content:space-between}
+.price-val{
+  font-family:var(--serif);font-size:1.6rem;font-weight:600;
+  background:linear-gradient(135deg,var(--white),var(--blue-3));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.prod-btn{
+  font-size:.72rem;font-weight:500;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--navy);text-decoration:none;
+  padding:9px 22px;border-radius:100px;
+  background:linear-gradient(135deg,var(--white),rgba(240,244,255,.85));
+  transition:transform .3s var(--spring),box-shadow .3s;
+}
+.prod-btn:hover{transform:scale(1.06);box-shadow:0 0 24px rgba(255,255,255,.2)}
+
+/* ═══════════════════════════════════════════════
+   TESTIMONIALS
+═══════════════════════════════════════════════ */
+.testimonials{padding:140px 80px}
+
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+
+.testi-card{
+  background:var(--glass-bg);border:1px solid var(--glass-border);
+  border-radius:20px;padding:40px 36px;backdrop-filter:blur(20px);
+  position:relative;transition:transform .4s var(--spring),box-shadow .4s;
+}
+.testi-card::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent);
+}
+.testi-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 24px 56px rgba(0,0,0,.4),0 0 32px rgba(26,86,255,.07);
+}
+.testi-stars{display:flex;gap:4px;margin-bottom:24px}
+.star{
+  width:14px;height:14px;background:var(--gold);
+  clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
+}
+.testi-quote{
+  font-family:var(--serif);font-style:italic;font-weight:400;
+  font-size:1.1rem;line-height:1.7;color:var(--white-dim);margin-bottom:28px;
+}
+.testi-quote::before{content:'\201C';color:var(--blue-2);margin-right:2px}
+.testi-quote::after {content:'\201D';color:var(--blue-2);margin-left:2px}
+.testi-author{display:flex;align-items:center;gap:14px}
+.testi-avatar{
+  width:44px;height:44px;border-radius:50%;
+  background:linear-gradient(135deg,rgba(26,86,255,.3),rgba(14,165,233,.2));
+  border:1px solid rgba(26,86,255,.25);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-weight:600;font-size:1rem;color:var(--blue-3);
+}
+.testi-name{font-size:.9rem;font-weight:500;margin-bottom:2px}
+.testi-role{font-size:.75rem;color:var(--white-faint);letter-spacing:.05em}
+
+/* ═══════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════ */
+.footer-reveal{
+  opacity:0;transform:translateY(28px);
+  transition:opacity .9s var(--ease),transform .9s var(--ease);
+}
+.footer-reveal.in{opacity:1;transform:none}
+
+footer{
+  padding:80px 80px 44px;position:relative;z-index:1;
+  background:rgba(8,12,20,.6);backdrop-filter:blur(20px);
+  border-top:1px solid;
+  border-image:linear-gradient(90deg,transparent,var(--blue-1),var(--blue-2),var(--gold),transparent) 1;
+}
+.footer-top{
+  display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;
+  gap:60px;margin-bottom:64px;
+}
+.footer-brand .logo{
+  font-family:var(--serif);font-weight:700;font-size:1.8rem;
+  letter-spacing:.12em;display:inline-block;margin-bottom:16px;
+  background:linear-gradient(135deg,var(--white),var(--gold-light));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.footer-brand p{
+  font-size:.85rem;font-weight:300;color:var(--white-dim);
+  line-height:1.8;max-width:260px;
+}
+.footer-col h4{
+  font-size:.72rem;font-weight:500;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--white-faint);margin-bottom:20px;
+}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:12px}
+.footer-col ul a{
+  font-size:.85rem;font-weight:300;color:var(--white-dim);
+  text-decoration:none;transition:color .25s,transform .25s;display:inline-block;
+}
+.footer-col ul a:hover{color:var(--white);transform:translateX(4px)}
+
+.footer-bottom{
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:16px;padding-top:36px;
+  border-top:1px solid var(--glass-border);
+}
+.footer-copy{font-size:.76rem;color:var(--white-faint);letter-spacing:.05em}
+.footer-socials{display:flex;gap:12px}
+.soc-btn{
+  width:38px;height:38px;border-radius:50%;
+  background:var(--glass-bg);border:1px solid var(--glass-border);
+  display:flex;align-items:center;justify-content:center;
+  text-decoration:none;
+  transition:background .3s,border-color .3s,transform .35s var(--spring),box-shadow .3s;
+}
+.soc-btn:hover{
+  background:rgba(26,86,255,.12);border-color:rgba(26,86,255,.3);
+  transform:translateY(-3px);box-shadow:0 8px 24px rgba(26,86,255,.2);
+}
+.soc-btn svg{stroke:var(--white-dim);transition:stroke .3s}
+.soc-btn:hover svg{stroke:var(--blue-3)}
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════ */
+@media(max-width:1024px){
+  .hero{grid-template-columns:1fr;text-align:center;padding:120px 40px 80px}
+  .hero-sub{margin:0 auto 48px}
+  .hero-btns{justify-content:center}
+  .hero-visual{max-width:420px;margin:0 auto}
+  .feat-grid,.prod-grid,.testi-grid{grid-template-columns:1fr 1fr}
+  .footer-top{grid-template-columns:1fr 1fr;gap:40px}
+}
+@media(max-width:768px){
+  nav{padding:0 24px}
+  .nav-links{display:none}
+  .features,.products,.testimonials{padding-left:24px;padding-right:24px}
+  .stats-band{padding:60px 24px;flex-wrap:wrap}
+  .stat-item:first-child{border-radius:20px 20px 0 0}
+  .stat-item:last-child {border-radius:0 0 20px 20px}
+  .stat-item+.stat-item{border-left:1px solid var(--glass-border);border-top:none}
+  .feat-grid,.prod-grid,.testi-grid{grid-template-columns:1fr}
+  .footer-top{grid-template-columns:1fr;gap:32px}
+  footer{padding:60px 24px 36px}
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a class="nav-logo" href="#">ZIME</a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#products">Products</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+  <a class="nav-btn" href="#products">Shop Now</a>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-text">
+    <div class="hero-badge reveal">
+      <span class="badge-dot"></span>
+      New Collection — 2025
+    </div>
+    <h1 class="hero-h1 reveal" style="transition-delay:.1s">
+      Technology<br>
+      <span class="grad-text">Refined to</span><br>
+      Perfection.
+    </h1>
+    <p class="hero-sub reveal" style="transition-delay:.22s">
+      ZIME electronics are engineered at the intersection of form and function. Every device carries the weight of obsession — and the lightness of mastery.
+    </p>
+    <div class="hero-btns reveal" style="transition-delay:.36s">
+      <a class="btn-glow" href="#products">Explore Devices</a>
+      <a class="btn-ghost" href="#features">Learn More</a>
+    </div>
+  </div>
+
+  <div class="hero-visual reveal" style="transition-delay:.2s">
+    <div class="device-wrap">
+      <div class="device-halo"></div>
+      <div class="device">
+        <div class="device-bar">
+          <div class="d-dot"></div><div class="d-dot"></div><div class="d-dot"></div>
+          <div class="d-url"></div>
+        </div>
+        <div class="device-screen">
+          <div class="d-sidebar">
+            <div class="d-nav-item active"></div>
+            <div class="d-nav-item" style="margin-top:8px"></div>
+            <div class="d-nav-item"></div>
+            <div class="d-nav-item" style="width:65%"></div>
+            <div class="d-nav-item" style="margin-top:20px;width:75%"></div>
+            <div class="d-nav-item" style="width:55%"></div>
+          </div>
+          <div class="d-main">
+            <div class="d-chart-area">
+              <div class="d-line" style="width:120px;margin-bottom:4px"></div>
+              <div class="d-line short" style="margin-bottom:0"></div>
+              <div class="d-chart-bars">
+                <div class="d-bar" style="height:45%"></div>
+                <div class="d-bar" style="height:70%"></div>
+                <div class="d-bar" style="height:55%"></div>
+                <div class="d-bar" style="height:90%"></div>
+                <div class="d-bar" style="height:65%"></div>
+                <div class="d-bar" style="height:85%"></div>
+                <div class="d-bar" style="height:75%"></div>
+              </div>
+            </div>
+            <div class="d-cards">
+              <div class="d-card">
+                <div class="d-line accent"></div>
+                <div class="d-line short"></div>
+              </div>
+              <div class="d-card">
+                <div class="d-line" style="background:linear-gradient(90deg,rgba(201,169,110,.5),rgba(228,201,138,.3));width:70%"></div>
+                <div class="d-line short"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="device-stand"></div>
+      <div class="device-base"></div>
+      <div class="hero-badge-float hbf-1">✦ Award-Winning Design</div>
+      <div class="hero-badge-float hbf-2">⚡ 4ms Response Time</div>
+    </div>
+  </div>
+</section>
+
+<div class="grad-rule"></div>
+
+<!-- ── STATS ── -->
+<div class="stats-band">
+  <div class="stat-item reveal">
+    <div class="stat-num">2.4M</div>
+    <div class="stat-label">Devices Sold</div>
+  </div>
+  <div class="stat-item reveal" style="transition-delay:.08s">
+    <div class="stat-num">99.8%</div>
+    <div class="stat-label">Satisfaction Rate</div>
+  </div>
+  <div class="stat-item reveal" style="transition-delay:.16s">
+    <div class="stat-num">48</div>
+    <div class="stat-label">Countries</div>
+  </div>
+  <div class="stat-item reveal" style="transition-delay:.24s">
+    <div class="stat-num">6×</div>
+    <div class="stat-label">Industry Awards</div>
+  </div>
+</div>
+
+<div class="grad-rule" style="opacity:.15"></div>
+
+<!-- ── FEATURES ── -->
+<section class="features" id="features">
+  <div class="section-head">
+    <span class="section-tag reveal">Why ZIME</span>
+    <h2 class="reveal" style="transition-delay:.1s">Engineered Without<br>Compromise</h2>
+    <p class="reveal" style="transition-delay:.18s">Six principles, relentlessly applied. Every device, every decision.</p>
+  </div>
+  <div class="feat-grid">
+    <div class="feat-card reveal" style="transition-delay:.05s">
+      <div class="feat-icon-wrap">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+        </svg>
+      </div>
+      <h3>Neural Performance</h3>
+      <p>ZIME-engineered processors deliver up to 40% faster compute with 60% less power draw than industry benchmarks.</p>
+    </div>
+    <div class="feat-card reveal" style="transition-delay:.12s">
+      <div class="feat-icon-wrap">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+        </svg>
+      </div>
+      <h3>Adaptive Display</h3>
+      <p>ProLuminance panels calibrate brightness, colour temperature, and refresh rate in real time to the ambient environment.</p>
+    </div>
+    <div class="feat-card reveal" style="transition-delay:.2s">
+      <div class="feat-icon-wrap">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-2-8 2v7c0 6 8 10 8 10z"/>
+        </svg>
+      </div>
+      <h3>Sovereign Privacy</h3>
+      <p>On-device AI processing means your data never leaves the hardware. Zero-cloud, zero-compromise, by design.</p>
+    </div>
+    <div class="feat-card reveal" style="transition-delay:.08s">
+      <div class="feat-icon-wrap">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 20V10M12 20V4M6 20v-6"/>
+        </svg>
+      </div>
+      <h3>All-Day Endurance</h3>
+      <p>GraphenePower cells combined with intelligent load-balancing deliver up to 72 hours of continuous usage.</p>
+    </div>
+    <div class="feat-card reveal" style="transition-delay:.16s">
+      <div class="feat-icon-wrap">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>
+      </div>
+      <h3>Seamless Ecosystem</h3>
+      <p>Every ZIME device speaks a unified language. One tap to sync, share, and extend across your entire setup.</p>
+    </div>
+    <div class="feat-card reveal" style="transition-delay:.24s">
+      <div class="feat-icon-wrap">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+      </div>
+      <h3>Human-First Design</h3>
+      <p>Every edge radius, weight, and surface texture was determined by six months of ergonomic field research.</p>
+    </div>
+  </div>
+</section>
+
+<div class="grad-rule" style="opacity:.12"></div>
+
+<!-- ── PRODUCTS ── -->
+<section class="products" id="products">
+  <div class="section-head" style="padding-top:140px">
+    <span class="section-tag reveal">The Collection</span>
+    <h2 class="reveal" style="transition-delay:.1s">Devices That<br>Define the Category</h2>
+    <p class="reveal" style="transition-delay:.18s">Three flagships. One uncompromising standard.</p>
+  </div>
+  <div class="prod-grid">
+    <!-- Watch -->
+    <div class="prod-card reveal" style="transition-delay:.06s">
+      <div class="prod-visual">
+        <div class="prod-illustration">
+          <div class="watch-glow"></div>
+          <div class="watch-strap-t"></div>
+          <div class="css-watch"></div>
+          <div class="watch-strap-b"></div>
+        </div>
+        <div class="prod-overlay"></div>
+      </div>
+      <div class="prod-info">
+        <p class="prod-tag">Wearable</p>
+        <h3>ZIME Arc</h3>
+        <p>Ultra-thin titanium body. Health sensors that redefined what a watch can know about you.</p>
+        <div class="prod-price">
+          <span class="price-val">$649</span>
+          <a class="prod-btn" href="#">Buy Now</a>
+        </div>
+      </div>
+    </div>
+    <!-- Earbuds -->
+    <div class="prod-card reveal" style="transition-delay:.14s">
+      <div class="prod-visual">
+        <div class="prod-illustration">
+          <div class="css-earbuds">
+            <div class="earbud"></div>
+            <div class="earbud-case">
+              <div class="eb-slot"></div><div class="eb-slot"></div>
+            </div>
+            <div class="earbud" style="transform:scaleX(-1)"></div>
+          </div>
+        </div>
+        <div class="prod-overlay"></div>
+      </div>
+      <div class="prod-info">
+        <p class="prod-tag">Audio</p>
+        <h3>ZIME Aura</h3>
+        <p>Spatial audio engineered to feel live. 48-hour total charge. Silence has never sounded this good.</p>
+        <div class="prod-price">
+          <span class="price-val">$289</span>
+          <a class="prod-btn" href="#">Buy Now</a>
+        </div>
+      </div>
+    </div>
+    <!-- Laptop -->
+    <div class="prod-card reveal" style="transition-delay:.22s">
+      <div class="prod-visual">
+        <div class="prod-illustration">
+          <div class="css-laptop">
+            <div class="laptop-screen">
+              <div class="laptop-screen-inner">
+                <div class="ls-line accent"></div>
+                <div class="ls-line"></div>
+                <div class="ls-line short"></div>
+                <div class="ls-line" style="width:50%;margin-top:6px"></div>
+                <div class="ls-line short"></div>
+              </div>
+            </div>
+            <div class="laptop-hinge"></div>
+            <div class="laptop-base"></div>
+          </div>
+        </div>
+        <div class="prod-overlay"></div>
+      </div>
+      <div class="prod-info">
+        <p class="prod-tag">Computing</p>
+        <h3>ZIME Apex</h3>
+        <p>1.1kg. 40 hours. A display that makes every other laptop look like a prototype.</p>
+        <div class="prod-price">
+          <span class="price-val">$2,199</span>
+          <a class="prod-btn" href="#">Buy Now</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ── -->
+<section class="testimonials" id="testimonials">
+  <div class="section-head">
+    <span class="section-tag reveal">Reviews</span>
+    <h2 class="reveal" style="transition-delay:.1s">Trusted by Those<br>Who Notice the Difference</h2>
+  </div>
+  <div class="testi-grid">
+    <div class="testi-card reveal" style="transition-delay:.06s">
+      <div class="testi-stars">
+        <div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div>
+      </div>
+      <p class="testi-quote">The Arc has replaced my phone for morning runs and my medical checkups. The accuracy is unsettling — in the best possible way.</p>
+      <div class="testi-author">
+        <div class="testi-avatar">M</div>
+        <div>
+          <p class="testi-name">Mara Jensen</p>
+          <p class="testi-role">Professional Athlete</p>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal" style="transition-delay:.14s">
+      <div class="testi-stars">
+        <div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div>
+      </div>
+      <p class="testi-quote">I've reviewed hundreds of laptops. The Apex is the first one where I genuinely couldn't find anything to criticize. It's simply correct.</p>
+      <div class="testi-author">
+        <div class="testi-avatar">D</div>
+        <div>
+          <p class="testi-name">David Osei</p>
+          <p class="testi-role">Senior Tech Editor, The Verge</p>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal" style="transition-delay:.22s">
+      <div class="testi-stars">
+        <div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div>
+      </div>
+      <p class="testi-quote">ZIME Aura on a long-haul flight felt like being in a private concert hall. I haven't touched my old earbuds since.</p>
+      <div class="testi-author">
+        <div class="testi-avatar">S</div>
+        <div>
+          <p class="testi-name">Sofia Reyes</p>
+          <p class="testi-role">Sound Director, Universal</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<div class="grad-rule"></div>
+<footer id="about">
+  <div class="footer-top">
+    <div class="footer-brand footer-reveal">
+      <div class="logo">ZIME</div>
+      <p>We make technology that disappears into life — powerful enough to trust, refined enough to forget you're using it.</p>
+    </div>
+    <div class="footer-col footer-reveal" style="transition-delay:.1s">
+      <h4>Products</h4>
+      <ul>
+        <li><a href="#">ZIME Arc</a></li>
+        <li><a href="#">ZIME Aura</a></li>
+        <li><a href="#">ZIME Apex</a></li>
+        <li><a href="#">Accessories</a></li>
+      </ul>
+    </div>
+    <div class="footer-col footer-reveal" style="transition-delay:.18s">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Press</a></li>
+        <li><a href="#">Investors</a></li>
+      </ul>
+    </div>
+    <div class="footer-col footer-reveal" style="transition-delay:.26s">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="#">Help Center</a></li>
+        <li><a href="#">Warranty</a></li>
+        <li><a href="#">Privacy</a></li>
+        <li><a href="#">Terms</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy footer-reveal">© 2025 ZIME Technologies. All rights reserved.</span>
+    <div class="footer-socials footer-reveal" style="transition-delay:.1s">
+      <a class="soc-btn" href="#" aria-label="Twitter">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+      </a>
+      <a class="soc-btn" href="#" aria-label="Instagram">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      </a>
+      <a class="soc-btn" href="#" aria-label="LinkedIn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Scroll reveal
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal, .footer-reveal').forEach(el => io.observe(el));
+
+// Feature card spotlight
+document.querySelectorAll('.feat-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    card.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%');
+    card.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%');
+  });
+});
+
+// Counter animation
+function animCount(el, target, suffix, decimals = 0) {
+  const dur = 1800, start = performance.now();
+  (function step(now) {
+    const p = Math.min((now - start) / dur, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    el.textContent = (target * ease).toFixed(decimals) + suffix;
+    if (p < 1) requestAnimationFrame(step);
+  })(performance.now());
+}
+const statsIo = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const n = document.querySelectorAll('.stat-num');
+      animCount(n[0], 2.4, 'M', 1);
+      animCount(n[1], 99.8, '%', 1);
+      animCount(n[2], 48, '');
+      n[3].textContent = '6×';
+      statsIo.disconnect();
+    }
+  });
+}, { threshold: 0.5 });
+const statsEl = document.querySelector('.stats-band');
+if (statsEl) statsIo.observe(statsEl);
+</script>
+</body>
+</html>
